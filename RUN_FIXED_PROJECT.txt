@@ -1,0 +1,44 @@
+VendorBridge fixed project run steps
+
+1) Backend setup
+   cd server
+   npm install
+
+2) Edit server/.env
+   Put your PostgreSQL password in DATABASE_URL.
+   If the password contains @, write %40 instead.
+   Example: Kalp1234@ -> Kalp1234%40
+
+3) Database setup
+   Make sure PostgreSQL is running and database vendorbridge exists.
+   Then run:
+   npx prisma generate
+   npx prisma db push
+   npm run prisma:seed
+   npm run dev
+
+4) Frontend setup in another terminal
+   cd client
+   npm install
+   npm run dev
+
+5) Open frontend
+   http://localhost:5173
+
+Demo logins after seed:
+Admin: admin@vendorbridge.com / demo123
+Procurement: procurement@vendorbridge.com / demo123
+Manager: manager@vendorbridge.com / demo123
+Finance: finance@vendorbridge.com / demo123
+Vendor: vendor1@techsupplies.com / demo123
+
+What was fixed:
+- Login loop/token storage issue fixed
+- Frontend API base URL fixed for local backend
+- Broken imports fixed
+- DashboardLayout children issue fixed
+- Client build verified successfully
+- Main Prisma schema restored to server/prisma/schema.prisma
+- Seed file restored to server/prisma/seed.ts
+- bcrypt replaced with bcryptjs to avoid native install errors
+- Notification/vendor relation issues cleaned

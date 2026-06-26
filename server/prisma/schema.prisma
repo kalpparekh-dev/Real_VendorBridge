@@ -1,0 +1,197 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  password      String
+  role          Role
+  vendorId      String?
+  vendor        Vendor?        @relation(fields: [vendorId], references: [id])
+  activities    Activity[]
+  notifications Notification[]
+  createdAt     DateTime       @default(now())
+}
+
+enum Role {
+  ADMIN
+  PROCUREMENT_OFFICER
+  MANAGER
+  FINANCE
+  VENDOR
+}
+
+model Vendor {
+  id           String       @id @default(uuid())
+  companyName  String
+  contactEmail String       @unique
+  phone        String?
+  address      String?
+  category     String?
+  rating       Float?       @default(0)
+  status       VendorStatus @default(ACTIVE)
+  users        User[]
+  quotations   Quotation[]
+  createdAt    DateTime     @default(now())
+}
+
+enum VendorStatus {
+  ACTIVE
+  INACTIVE
+  BLACKLISTED
+}
+
+model RFQ {
+  id          String      @id @default(uuid())
+  title       String
+  description String?
+  deadline    DateTime
+  status      RFQStatus   @default(DRAFT)
+  createdBy   String
+  items       RFQItem[]
+  quotations  Quotation[]
+  createdAt   DateTime    @default(now())
+}
+
+enum RFQStatus {
+  DRAFT
+  PUBLISHED
+  CLOSED
+  AWARDED
+}
+
+model RFQItem {
+  id          String  @id @default(uuid())
+  rfqId       String
+  rfq         RFQ     @relation(fields: [rfqId], references: [id])
+  name        String
+  description String?
+  quantity    Int
+  unit        String
+}
+
+model Quotation {
+  id            String          @id @default(uuid())
+  rfqId         String
+  rfq           RFQ             @relation(fields: [rfqId], references: [id])
+  vendorId      String
+  vendor        Vendor          @relation(fields: [vendorId], references: [id])
+  totalAmount   Decimal
+  deliveryDays  Int
+  validUntil    DateTime
+  notes         String?
+  status        QuotationStatus @default(SUBMITTED)
+  items         QuotationItem[]
+  approval      Approval?
+  purchaseOrder PurchaseOrder?
+  createdAt     DateTime        @default(now())
+}
+
+enum QuotationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  AWARDED
+}
+
+model QuotationItem {
+  id          String    @id @default(uuid())
+  quotationId String
+  quotation   Quotation @relation(fields: [quotationId], references: [id])
+  rfqItemId   String
+  unitPrice   Decimal
+  quantity    Int
+  totalPrice  Decimal
+}
+
+model Approval {
+  id          String         @id @default(uuid())
+  quotationId String         @unique
+  quotation   Quotation      @relation(fields: [quotationId], references: [id])
+  reviewedBy  String
+  status      ApprovalStatus
+  comments    String?
+  reviewedAt  DateTime       @default(now())
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model PurchaseOrder {
+  id           String    @id @default(uuid())
+  quotationId  String    @unique
+  quotation    Quotation @relation(fields: [quotationId], references: [id])
+  poNumber     String    @unique
+  issuedAt     DateTime  @default(now())
+  deliveryDate DateTime
+  status       POStatus  @default(ISSUED)
+  invoice      Invoice?
+}
+
+enum POStatus {
+  ISSUED
+  DELIVERED
+  CANCELLED
+}
+
+model Invoice {
+  id              String        @id @default(uuid())
+  purchaseOrderId String        @unique
+  purchaseOrder   PurchaseOrder @relation(fields: [purchaseOrderId], references: [id])
+  invoiceNumber   String        @unique
+  amount          Decimal
+  dueDate         DateTime
+  status          InvoiceStatus @default(PENDING)
+  fileUrl         String?
+  payment         Payment?
+  createdAt       DateTime      @default(now())
+}
+
+enum InvoiceStatus {
+  PENDING
+  APPROVED
+  PAID
+  OVERDUE
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  invoiceId String   @unique
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  amount    Decimal
+  method    String
+  reference String?
+  paidAt    DateTime @default(now())
+}
+
+model Activity {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String
+  meta      Json?
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  title     String
+  body      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

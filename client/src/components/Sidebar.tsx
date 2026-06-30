@@ -17,13 +17,54 @@ import { useAuthStore } from '../store/authStore';
 import { cn } from '../utils/cn';
 
 const navItems = [
-  { path: '/admin', icon: LayoutDashboard, label: 'Dashboard', roles: ['ADMIN'] },
-  { path: '/manager', icon: CheckSquare, label: 'Approvals', roles: ['ADMIN', 'MANAGER'] },
-  { path: '/finance', icon: DollarSign, label: 'Finance', roles: ['ADMIN', 'FINANCE'] },
-  { path: '/vendor', icon: ShoppingCart, label: 'Vendor Portal', roles: ['ADMIN', 'VENDOR'] },
-  { path: '/procurement', icon: FileText, label: 'RFQs', roles: ['ADMIN', 'PROCUREMENT_OFFICER'] },
-  { path: '/vendors', icon: Users, label: 'Vendors', roles: ['ADMIN'] },
-  { path: '/reports', icon: BarChart3, label: 'Reports', roles: ['ADMIN', 'PROCUREMENT_OFFICER', 'FINANCE'] },
+  {
+    path: '/admin',
+    icon: LayoutDashboard,
+    label: 'Dashboard',
+    roles: ['ADMIN'],
+  },
+  {
+    path: '/procurement',
+    icon: FileText,
+    label: 'RFQs',
+    roles: ['ADMIN', 'PROCUREMENT_OFFICER'],
+  },
+  {
+    path: '/vendors',
+    icon: Users,
+    label: 'Vendors',
+    roles: ['ADMIN', 'PROCUREMENT_OFFICER'],
+  },
+  {
+    path: '/manager',
+    icon: CheckSquare,
+    label: 'Approvals',
+    roles: ['ADMIN', 'MANAGER', 'PROCUREMENT_OFFICER'],
+  },
+  {
+    path: '/finance',
+    icon: DollarSign,
+    label: 'Finance',
+    roles: ['ADMIN', 'FINANCE', 'PROCUREMENT_OFFICER'],
+  },
+  {
+    path: '/vendor',
+    icon: ShoppingCart,
+    label: 'Vendor Portal',
+    roles: ['ADMIN', 'VENDOR'],
+  },
+  {
+    path: '/reports',
+    icon: BarChart3,
+    label: 'Reports',
+    roles: ['ADMIN', 'PROCUREMENT_OFFICER', 'FINANCE'],
+  },
+  {
+    path: '/audit-trail',
+    icon: Bell,
+    label: 'Audit Trail',
+    roles: ['ADMIN', 'FINANCE', 'MANAGER', 'PROCUREMENT_OFFICER'],
+  },
 ];
 
 interface SidebarProps {

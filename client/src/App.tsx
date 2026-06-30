@@ -10,6 +10,8 @@ import VendorDashboard from './pages/VendorDashboard';
 import ProcurementDashboard from './pages/ProcurementDashboard';
 import Reports from './pages/Reports';
 import Vendors from './pages/Vendors';
+import AuditTrail from './pages/AuditTrail';
+import AIProcurementAssistant from './components/AIProcurementAssistant';
 import { useAuthStore } from './store/authStore';
 
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
@@ -25,10 +27,17 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => (
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = useAuthStore((state) => state.token);
+
   if (!token) {
     return <Navigate to="/login" replace />;
   }
-  return <PageTransition>{children}</PageTransition>;
+
+  return (
+    <PageTransition>
+      {children}
+      <AIProcurementAssistant />
+    </PageTransition>
+  );
 };
 
 function App() {
@@ -36,7 +45,6 @@ function App() {
     <BrowserRouter>
       <AnimatePresence mode="wait">
         <Routes>
-          {/* Auth Routes */}
           <Route
             path="/login"
             element={
@@ -45,6 +53,7 @@ function App() {
               </PageTransition>
             }
           />
+
           <Route
             path="/register"
             element={
@@ -54,9 +63,8 @@ function App() {
             }
           />
 
-          {/* Dashboard Routes */}
           <Route path="/" element={<Navigate to="/admin" replace />} />
-          
+
           <Route
             path="/admin"
             element={
@@ -67,7 +75,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/manager"
             element={
@@ -78,7 +86,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/finance"
             element={
@@ -89,7 +97,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/vendor"
             element={
@@ -100,7 +108,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/procurement"
             element={
@@ -111,7 +119,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/reports"
             element={
@@ -122,7 +130,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="/vendors"
             element={
@@ -134,7 +142,17 @@ function App() {
             }
           />
 
-          {/* Catch all */}
+          <Route
+            path="/audit-trail"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <AuditTrail />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="*" element={<Navigate to="/admin" replace />} />
         </Routes>
       </AnimatePresence>

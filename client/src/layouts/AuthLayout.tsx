@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Sparkles, BarChart3 } from 'lucide-react';
+import { ShieldCheck, Sparkles, BarChart3, Globe2 } from 'lucide-react';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -9,70 +9,64 @@ interface AuthLayoutProps {
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-bg-base text-text-primary">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#2563eb33,transparent_38%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,12,16,0.2),#0A0C10_75%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#2563eb30,transparent_34%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,#16a34a18,transparent_32%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(10,12,16,0.1),#0A0C10_82%)]" />
+
+      <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:56px_56px]" />
 
       <motion.div
-        initial={{ opacity: 0, y: -80 }}
+        initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9 }}
-        className="pointer-events-none absolute left-1/2 top-0 h-72 w-[520px] -translate-x-1/2 rounded-b-full bg-accent/20 blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-0 h-80 w-[760px] -translate-x-1/2 rounded-b-full bg-accent/20 blur-3xl"
       />
 
-      <motion.div
-        initial={{ opacity: 0, scaleY: 0.3 }}
-        animate={{ opacity: 1, scaleY: 1 }}
-        transition={{ duration: 1.1, delay: 0.15 }}
-        className="pointer-events-none absolute left-1/2 top-0 h-[460px] w-px origin-top -translate-x-1/2 bg-gradient-to-b from-accent via-accent/40 to-transparent"
-      />
-
-      <motion.div
-        initial={{ opacity: 0, y: -40, scale: 0.8 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.8, delay: 0.25 }}
-        className="pointer-events-none absolute left-1/2 top-20 h-20 w-20 -translate-x-1/2 rounded-full border border-accent/30 bg-accent/10 shadow-[0_0_80px_rgba(37,99,235,0.45)]"
-      />
-
-      <div className="absolute left-10 top-10 hidden rounded-2xl border border-border bg-bg-surface/70 p-4 backdrop-blur-xl lg:block">
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-accent/10 p-2 text-accent">
-            <ShieldCheck size={18} />
-          </div>
+      <div className="relative z-10 grid min-h-screen grid-cols-1 lg:grid-cols-[1.15fr_0.85fr]">
+        <section className="relative hidden min-h-screen flex-col justify-between p-10 lg:flex">
           <div>
-            <p className="text-sm font-medium">Enterprise RBAC</p>
-            <p className="text-xs text-text-muted">Secure multi-role access</p>
-          </div>
-        </div>
-      </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-surface/70 px-4 py-2 text-xs text-text-secondary backdrop-blur-xl">
+              <Sparkles size={14} className="text-accent" />
+              Enterprise Procurement SaaS
+            </div>
 
-      <div className="absolute bottom-10 left-10 hidden rounded-2xl border border-border bg-bg-surface/70 p-4 backdrop-blur-xl lg:block">
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-success/10 p-2 text-success">
-            <BarChart3 size={18} />
-          </div>
-          <div>
-            <p className="text-sm font-medium">Live Analytics</p>
-            <p className="text-xs text-text-muted">Spend, RFQs & invoices</p>
-          </div>
-        </div>
-      </div>
+            <h1 className="mt-10 max-w-2xl text-5xl font-semibold leading-tight text-text-primary xl:text-6xl">
+              Turn procurement chaos into executive clarity.
+            </h1>
 
-      <div className="absolute right-10 top-24 hidden rounded-2xl border border-border bg-bg-surface/70 p-4 backdrop-blur-xl lg:block">
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-warning/10 p-2 text-warning">
-            <Sparkles size={18} />
+            <p className="mt-6 max-w-xl text-base leading-7 text-text-secondary">
+              VendorBridge connects vendors, RFQs, quotations, approvals, purchase orders,
+              invoices, payments, audit trails and AI insights inside one command center.
+            </p>
           </div>
-          <div>
-            <p className="text-sm font-medium">AI Procurement</p>
-            <p className="text-xs text-text-muted">Insights & risk alerts</p>
-          </div>
-        </div>
-      </div>
 
-      <div className="relative z-10 flex min-h-screen items-center justify-center p-4">
-        <div className="w-full max-w-md rounded-[28px] border border-border bg-bg-surface/80 p-6 shadow-2xl backdrop-blur-xl">
-          {children}
-        </div>
+          <div className="grid max-w-2xl grid-cols-2 gap-4">
+            {[
+              { label: 'Secure RBAC', value: '5 roles', icon: ShieldCheck, color: 'text-accent' },
+              { label: 'Live Analytics', value: 'Real data', icon: BarChart3, color: 'text-success' },
+              { label: 'AI Procurement', value: 'Insights', icon: Sparkles, color: 'text-warning' },
+              { label: 'Cloud Ready', value: 'Deployed', icon: Globe2, color: 'text-accent' },
+            ].map((item, index) => (
+              <motion.div
+                key={item.label}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.15 + index * 0.08 }}
+                className="rounded-2xl border border-border bg-bg-surface/70 p-5 backdrop-blur-xl"
+              >
+                <item.icon size={20} className={item.color} />
+                <p className="mt-4 text-2xl font-semibold text-text-primary">{item.value}</p>
+                <p className="mt-1 text-sm text-text-muted">{item.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        <section className="flex min-h-screen items-center justify-center p-4 sm:p-8 lg:p-10">
+          <div className="w-full max-w-[520px] rounded-[32px] border border-border bg-bg-surface/82 p-5 shadow-2xl backdrop-blur-2xl sm:p-7">
+            {children}
+          </div>
+        </section>
       </div>
     </div>
   );

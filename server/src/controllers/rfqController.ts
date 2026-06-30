@@ -4,18 +4,26 @@ import { z } from 'zod';
 
 const prisma = new PrismaClient();
 
-const rfqSchema = z.object({
+const rfqItemSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().optional(),
+  quantity: z.number().int().positive(),
+  unit: z.string().min(1),
+});
+
+const createRFQSchema = z.object({
   title: z.string().min(3),
   description: z.string().optional(),
   deadline: z.string(),
-  items: z.array(
-    z.object({
-      name: z.string(),
-      description: z.string().optional(),
-      quantity: z.number().int().positive(),
-      unit: z.string(),
-    })
-  ),
+  items: z.array(rfqItemSchema).min(1),
+});
+
+const updateRFQSchema = z.object({
+  title: z.string().min(3).optional(),
+  description: z.string().optional(),
+  deadline: z.string().optional(),
+  status: z.nativeEnum(RFQStatus).optional(),
+  items: z.array(rfqItemSchema).optional(),
 });
 
 export const getRFQs = async (req: any, res: Response) => {
@@ -64,7 +72,7 @@ export const getRFQ = async (req: any, res: Response) => {
 
 export const createRFQ = async (req: any, res: Response) => {
   try {
-    const data = rfqSchema.parse(req.body);
+    const data = createRFQSchema.parse(req.body);
 
     const deadline = new Date(data.deadline);
     const minDeadline = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000);
@@ -81,9 +89,14 @@ export const createRFQ = async (req: any, res: Response) => {
         description: data.description,
         deadline,
         status: RFQStatus.DRAFT,
-        createdBy: req.userId,
+        createdBy: req.userId || req.user?.id || 'system',
         items: {
-          create: data.items,
+          create: data.items.map((item) => ({
+            name: item.name,
+            description: item.description,
+            quantity: item.quantity,
+            unit: item.unit,
+          })),
         },
       },
       include: {
@@ -99,14 +112,30 @@ export const createRFQ = async (req: any, res: Response) => {
 
 export const updateRFQ = async (req: any, res: Response) => {
   try {
-    const data = rfqSchema.partial().parse(req.body);
+    const data = updateRFQSchema.parse(req.body);
+
+    const updateData: any = {};
+
+    if (data.title !== undefined) updateData.title = data.title;
+    if (data.description !== undefined) updateData.description = data.description;
+    if (data.deadline !== undefined) updateData.deadline = new Date(data.deadline);
+    if (data.status !== undefined) updateData.status = data.status;
+
+    if (data.items && data.items.length > 0) {
+      updateData.items = {
+        deleteMany: {},
+        create: data.items.map((item) => ({
+          name: item.name,
+          description: item.description,
+          quantity: item.quantity,
+          unit: item.unit,
+        })),
+      };
+    }
 
     const rfq = await prisma.rFQ.update({
       where: { id: req.params.id },
-      data: {
-        ...data,
-        deadline: data.deadline ? new Date(data.deadline) : undefined,
-      },
+      data: updateData,
       include: {
         items: true,
       },
@@ -128,7 +157,6 @@ export const publishRFQ = async (req: any, res: Response) => {
       },
     });
 
-    // Notify all active vendors
     const vendors = await prisma.vendor.findMany({
       where: { status: 'ACTIVE' },
       include: { users: true },

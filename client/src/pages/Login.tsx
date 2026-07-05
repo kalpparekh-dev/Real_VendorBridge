@@ -90,21 +90,30 @@ const Login = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="mb-8 flex flex-col items-center text-center">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-accent">
-            <ShoppingCart size={32} className="text-white" />
-          </div>
+        <div className="mb-10 text-center">
 
-          <h1 className="text-2xl font-semibold text-text-primary">
-            VendorBridge
-          </h1>
+  <motion.div
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    transition={{ duration: 0.5 }}
+    className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl border border-amber-400/20 bg-gradient-to-br from-amber-400 to-amber-600 shadow-[0_0_60px_rgba(251,191,36,.45)]"
+  >
+    <ShoppingCart size={36} className="text-white" />
+  </motion.div>
 
-          <p className="mt-2 text-sm text-text-secondary">
-            Enterprise procurement and vendor management platform
-          </p>
-        </div>
+  <h1 className="text-4xl font-bold tracking-tight text-white">
+    VendorBridge
+  </h1>
 
-        <Card>
+  <p className="mt-3 text-sm tracking-wide text-gray-400">
+    Enterprise Procurement Intelligence Platform
+  </p>
+
+  <div className="mx-auto mt-6 h-px w-28 bg-gradient-to-r from-transparent via-amber-400 to-transparent" />
+
+</div>
+
+        <Card className="border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_25px_80px_rgba(0,0,0,.55)] rounded-3xl">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="email">Email</Label>
@@ -140,7 +149,11 @@ const Login = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button
+  type="submit"
+  disabled={loading}
+  className="w-full rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 text-black font-semibold shadow-[0_0_35px_rgba(251,191,36,.35)] hover:scale-[1.02] transition-all duration-300"
+>
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>

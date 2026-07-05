@@ -26,6 +26,19 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// API Health Route
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'VendorBridge API',
+    version: '1.0.0',
+    message: 'Enterprise procurement and vendor management API is running',
+    documentation: '/api/docs',
+  });
+});
+
+// Swagger Documentation
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Routes
@@ -41,6 +54,7 @@ app.use('/api/activities', activityRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/executive-report', executiveReportRoutes);
+
 // Error handling
 app.use(errorHandler);
 

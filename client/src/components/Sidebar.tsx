@@ -93,7 +93,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed left-0 top-0 z-50 h-full w-64 border-r border-border bg-bg-surface transition-transform duration-300 lg:translate-x-0',
+          'fixed left-0 top-0 z-50 h-full w-72 border-r border-white/10 bg-[#0C0F14]/90 backdrop-blur-2xl shadow-[20px_0_60px_rgba(0,0,0,.45)] transition-transform duration-300 lg:translate-x-0',
           isOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
@@ -101,10 +101,10 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
           {/* Logo */}
           <div className="flex items-center justify-between border-b border-border p-6">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-600 shadow-[0_0_30px_rgba(251,191,36,.35)]">
                 <ShoppingCart size={20} className="text-white" />
               </div>
-              <span className="text-lg font-semibold text-text-primary">VendorBridge</span>
+              <span className="text-xl font-bold tracking-tight text-white"></span>
             </div>
             <button
               onClick={onClose}
@@ -127,17 +127,17 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                   onClick={() => onClose()}
                   className={({ isActive: active }) =>
                     cn(
-                      'relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                      'relative flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-300',
                       active
-                        ? 'bg-accent/10 text-accent'
-                        : 'text-text-secondary hover:bg-bg-elevated hover:text-text-primary'
+                        ?'bg-gradient-to-r from-amber-400/15 to-yellow-500/10 text-amber-300 border border-amber-400/15'
+                        : 'text-gray-400 hover:bg-white/5 hover:text-white'
                     )
                   }
                 >
                   {isActive && (
                     <motion.div
                       layoutId="active-nav"
-                      className="absolute left-0 top-1/2 h-8 w-1 -translate-y-1/2 rounded-r-full bg-accent"
+                      className="absolute left-1 top-2 bottom-2 w-1 rounded-full bg-gradient-to-b from-amber-300 to-yellow-500"
                       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                     />
                   )}
@@ -150,8 +150,8 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
           {/* User section */}
           <div className="border-t border-border p-4">
-            <div className="flex items-center gap-3 rounded-lg bg-bg-elevated p-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent/20 text-accent">
+            <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl p-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-600 text-black text-accent">
                 {user?.name?.charAt(0).toUpperCase()}
               </div>
               <div className="flex-1 min-w-0">

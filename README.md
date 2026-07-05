@@ -6,9 +6,17 @@
 
 **From RFQ to payment — one connected procurement command center.**
 
-[Live Application](https://real-vendor-bridge-tau.vercel.app/login) · [API Status](https://real-vendorbridge.onrender.com/) · [API Documentation](https://real-vendorbridge.onrender.com/api/docs)
+[🚀 Live Application](https://real-vendor-bridge-tau.vercel.app/login) · [▶️ Watch Demo](https://youtu.be/UzTNnD5Ehr4) · [⚡ API Status](https://real-vendorbridge.onrender.com/) · [📚 API Documentation](https://real-vendorbridge.onrender.com/api/docs)
 
 </div>
+
+---
+
+## 🎬 Product Demo
+
+See VendorBridge in action across the complete procurement lifecycle — from role-based authentication and executive analytics to RFQs, finance operations, AI-assisted insights, and documented REST APIs.
+
+▶️ **[Watch the 3-minute VendorBridge Demo](https://youtu.be/UzTNnD5Ehr4)**
 
 ---
 
